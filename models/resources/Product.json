@@ -1,0 +1,123 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product",
+    "description": "A Product made and sold by a specific Vendor.",
+    "type": "object",
+    "properties": {
+    	"id": {
+    		"description": "The unique identifier for the Product.",
+    		"type": "string"
+    	},
+    	"name": {
+    		"description": "The short name of the Product.",
+    		"type": "string"
+    	},
+    	"description": {
+    		"description": "The longer-form description of the Product.",
+    		"type": "string"
+    	},
+    	"unitPrice": {
+    		"description": "The price per unit of the Product.",
+    		"type": "number",
+    		"minimum": 0,
+    		"exclusiveMinimum": true
+    	},
+    	"unit": {
+    		"description": "The atomic unit of measurement for quantities of the Product.",
+    		"type": "string"
+    	},
+        "options": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "oneOf": [
+                    { "$ref": "#/definitions/BinaryProductOption" },
+                    { "$ref": "#/definitions/OneOfProductOption" },
+                    { "$ref": "#/definitiions/SomeOfProductOption" }
+                ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": ["id", "name", "unit", "unitPrice"],
+    "definitions": {
+        "BinaryProductOption": {
+            "properties": {
+                "name": {
+                    "description": "The short name of the option.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The longer-form description of the option.",
+                    "type": "string"
+                },
+                "choices": {
+                    "description": "The two choices for the option. Exactly one must be applied for the option.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductOptionChoice"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "uniqueItems": true
+                },
+                "defaultChoice": {
+                    "description": "The default choice (referenced from the choices set) to be applied for the option. Defaults to 0.",
+                    "type": "integer"
+                }
+            },
+            "required": [ "name", "choices"]
+        },
+        "OneOfProductOption": {
+            "properties": {
+                "name": {},
+                "description": {},
+                "choices": {
+                    "description": "The set of choices for the option. Exactly one must be applied for the option.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductOptionChoice"
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "defaultChoice": {
+                    "description": "The default choice (referenced from the choices set) to be applied for the option. Defaults to 0.",
+                    "type": "integer"
+                }
+            },
+            "required": [ "name", "choices" ]
+        },
+        "SomeOfProductOption": {},
+        "ProductOptionChoice": {
+            "properties": {
+                "name": {
+                    "description": "The short name displayed for the choice.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The longer-form description displayed for the choice.",
+                    "type": "string"
+                }
+                "unitPriceDelta": {
+                    "description": "The ammount the choice's application will add to the Product's unit price (can be negative).",
+                    "type": "number"
+                }    
+            }
+            
+        }
+    }
+}
+
+
+
+    

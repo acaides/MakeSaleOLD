@@ -1,0 +1,38 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Order",
+    "description": "A purchase order by a Buyer for a specific collection of items from a specific Vendor.",
+    "type": "object",
+    "properties": {
+    	"id": {
+    		"description": "The identifier for the Order.",
+    		"type": "string"
+    	},
+        "buyerId": {
+            "description": "The identifier for the Buyer purchasing the goods in the Order.",
+            "type": "string"
+        },
+        "buyerName": {
+            "description": "The name of the Buyer purchasing the goods in the Order.",
+            "type": "string"
+        },
+        "vendorId": {
+            "description": "The identifier for the Vendor selling the goods in the Order.",
+            "type": "string"
+        },
+        "vendorName": {
+            "description": "The name of the Vendor selling the goods in the Order.",
+            "type": "string"
+        },
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "$ref": "OrderItem"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        }
+    },
+    "required": ["id", "buyerId", "vendorId", "items"]
+}

@@ -1,0 +1,31 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Catalog",
+    "description": "A listing of Products from a Vendor.",
+    "type": "object",
+    "properties": {
+    	"id": {
+    		"description": "The unique identifier for the Catalog.",
+    		"type": "string"
+    	},
+    	"name": {
+    		"description": "The short name of the Catalog.",
+    		"type": "string"
+    	}, 
+        "description": {
+            "description": "The longer-form description of the Catalog.",
+            "type": "string"
+        }, 
+        "products": {
+            "description": "The listing of Products available in the Catalog.",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "$ref": "Product"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        }
+    },
+    "required": ["id", "name", "products"]
+}

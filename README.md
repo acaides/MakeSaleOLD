@@ -1,4 +1,4 @@
 MakeSale
-========
+=========
 
-The App For Makers
+The App for Makers

@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "OrderItem",
+    "description": "An Item from an Order, representing a specific quantity of a Product to be purchased.",
+    "type": "object",
+    "properties": {
+        "productId": {
+            "description": "The unique identifier for the Product referenced by the OrderItem.",
+            "type": "string"
+        },
+        "productName": {
+            "description": "The human-readable name of the Product.",
+            "type": "string"
+        },
+        "productDescription": {
+            "description": "The human-readable description of the Product.",
+            "type": "string"
+        },
+        "unit": {
+            "description": "The atomic unit of measurement for the Product.",
+            "type": "string"
+        },
+        "unitPrice": {
+            "description": "The price, in the currency of the containing Order, for each atomic unit of the Product.",
+            "type": "number"
+        },
+        "quantity": {
+            "description": "The whole number of units of the Product to be purchased in the containing Order.",
+            "type": "integer"
+        },
+        "itemPrice": {
+            "description": "The total price of the item, in the currency of the containing order: unitPrice multiplied by quantity.",
+            "type": "number"
+        }
+    },
+    "required": ["productId", "productName", "unit", "unitPrice", "quantity", "itemPrice"]
+}

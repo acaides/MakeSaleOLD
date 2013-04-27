@@ -1,0 +1,19 @@
+{
+  "apiVersion": "1",
+  "swaggerVersion": "1.1",
+  "basePath": "http://api",
+  "apis": [
+    {
+      "path": "/product/{id}",
+      "description": "Operations about products."
+    },
+    {
+      "path": "/vendor/{id}",
+      "description": "Operations about vendors."
+    },
+    {
+      "path": "/catalog/{id}",
+      "description": "Operations about catalogs."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Invoice",
+    "description": "A report on Orders filled by a specific Vendor for a specific Buyer.",
+    "type": "object",
+    "properties": {
+    	"id": {
+    		"description": "The unique identifier for the Invoice.",
+    		"type": "string"
+    	},
+        "buyerId": {
+            "description": "The identifier for the Buyer purchasing the goods in the Order.",
+            "type": "string"
+        },
+        "buyerName": {
+            "description": "The name of the Buyer purchasing the goods in the Order.",
+            "type": "string"
+        },
+        "vendorId": {
+            "description": "The identifier for the Vendor selling the goods in the Order.",
+            "type": "string"
+        },
+        "vendorName": {
+            "description": "The name of the Vendor selling the goods in the Order.",
+            "type": "string"
+        },
+        "notes": {
+            "description": "Notes from the Vendor to the Buyer attached to the invoice.",
+            "type": "string"
+        },
+        "orders": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "$ref": "Order"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+
+    },
+    "required": ["id", "buyerId", "vendorId", "orders"]
+}
