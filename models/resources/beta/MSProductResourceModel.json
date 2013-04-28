@@ -107,7 +107,7 @@
                 "description": {
                     "description": "The longer-form description displayed for the choice.",
                     "type": "string"
-                }
+                },
                 "unitPriceDelta": {
                     "description": "The ammount the choice's application will add to the Product's unit price (can be negative).",
                     "type": "number"
@@ -117,7 +117,3 @@
         }
     }
 }
-
-
-
-    

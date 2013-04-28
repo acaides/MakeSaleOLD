@@ -1,20 +1,39 @@
 {
-	"app": {
+	"api": {
+		"portNumber": 3000,
+		"impls": [ "beta" ]
+	},
 
-	},
-	
-	"database": {
-		"host": "127.0.0.1",
-		"user": "root",
-		"password": "secret"
-	},
-	
-	"search": {
-		"clientOptions": {}
-	},
-	
-	"cache": {
-		"serverLocations": [ "127.0.0.1:11212" ],
-		"options": {}
+	"beta": {
+		"module": "./impls/beta/MSBetaApi.js",
+
+		"controllers": {
+			"MSProductsController": "./impls/beta/controllers/MSProductsController"
+		},
+
+		"resourceModels": {
+			"MSProductResourceModel": "../../models/resources/beta/MSProductResourceModel",
+			"MSMakerResourceModel": "../../models/resources/beta/MSMakerResourceModel"
+		},
+
+		"orms": {
+			"MSProductORM": "./impls/beta/orms/MSProductORM"
+		},
+		
+		"database": {
+			"name": "MakeSale",
+			"host": "127.0.0.1",
+			"user": "msapi",
+			"password": "3terna1Return"
+		},
+		
+		"search": {
+			"clientOptions": {}
+		},
+		
+		"cache": {
+			"serverLocations": [ "127.0.0.1:11212" ],
+			"options": {}
+		}
 	}
 }
