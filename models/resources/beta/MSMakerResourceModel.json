@@ -1,23 +1,23 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Vendor",
+    "title": "Maker",
     "description": "A maker and seller of Products.",
     "type": "object",
     "properties": {
     	"id": {
-    		"description": "The unique identifier for the Vendor.",
+    		"description": "The unique identifier for the Maker.",
     		"type": "string"
     	},
     	"name": {
-    		"description": "The short name of the Vendor.",
+    		"description": "The short name of the Maker.",
     		"type": "string"
     	},
         "legalName": {
-            "description": "The full, legal name of the Vendor business entity.",
+            "description": "The full, legal name of the Maker business entity.",
             "type": "string"
         },
     	"description": {
-    		"description": "The human-readable (displayed) description of the vendor.",
+    		"description": "The human-readable (displayed) description of the Maker.",
     		"type": "string"
     	}
     },

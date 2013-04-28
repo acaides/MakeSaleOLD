@@ -1,4 +1,4 @@
-module.exports = function MSProductsControllerConstructor () {
+module.exports = function MSProductsControllerConstructor (api) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         offsetQueryParamSpec = swagger.queryParam(
@@ -80,10 +80,35 @@ module.exports = function MSProductsControllerConstructor () {
         };
 
     // Setup "createProducts"
-    swagger.addPost({});
+    api.addPost({
+        spec: {
+            description: 'Create multiple new Products in the User\'s writable scope.',
+            path: '/products',
+            notes: 'Creates a new Product in the User\'s writable scope for each specifed in the request list.',
+            summary: 'Create Multiple Products',
+            method: 'GET',
+            params: [
+                swagger.bodyParam(
+                    // name:
+                    'newProductsList',
+                    // description:
+                    'A List of new Products to be created.',
+                    // dataType:
+                    'List'
+                )
+            ],
+            responseClass: 'List',
+            errorResponses: [ offsetQueryParamError, limitQueryParamError, fieldsQueryParamError ],
+            nickname : 'createProducts'
+        },
+
+        action: function MSProductsControllerRetrieveProductsList (req, res) {
+
+        }
+    });
 
     // Setup "retrieveProductsList"
-    swagger.addGet({
+    api.addGet({
         spec: {
             description: 'Retrieve a list of Products in the User\'s scope.',
             path: '/products',
@@ -116,21 +141,12 @@ module.exports = function MSProductsControllerConstructor () {
             validatePagingParams(req);
             validateFieldsParam(req);
 
-            if (!req.params.petId) {
-                throw swagger.errors.invalid('id');
-            }
-
-            if (pet) {
-                res.send(JSON.stringify(pet));
-            } else {
-                throw swagger.errors.notFound('pet');
-            }
         }
     });
 
     // Setup "updateProducts"
-    swagger.addPut({});
+    api.addPut({});
 
     // Setup "deleteProducts"
-    swagger.addDelete({});
+    api.addDelete({});
 };
