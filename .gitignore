@@ -12,3 +12,10 @@ logs
 results
 
 npm-debug.log
+**/node_modules
+node_modules
+build
+**/.DS_Store
+*.DS_Store
+*.sublime-project
+*.sublime-workspace

@@ -10,8 +10,10 @@ var config = require('config'),	// npm install config
 	solr = require('solr-client'),	// npm install solr-client
 	solrClient = solr.createClient(config.search.clientOptions),
 	express = require('express'),	// npm install -g express
+	swagger = require('swagger-node-express'),
 	api = express(),
-	productsController = require('MSProductsController');
+	betaApi = require('MSBetaApi.js');
+//	v1Api = require('MSVersionOneApi.js');
 
 api.use(express.json());	// Parse request body JSON.
 api.use(express.compress());	// Compress response body JSON.
@@ -19,36 +21,18 @@ api.use(express.query());	// Parse query string parameters.
 api.use(express.basicAuth());	// Parse HTTP Basic Auth header.
 api.use(require('MSAuth.js')());	// Process MakeSale authorization. 
 
-api.map = function MSApiMapper (a, route) {
-	route = route || '';
-	for (var key in a) {
-		switch (typeof a[key]) {
-			// { '/path': { ... }}
-			case 'object':
-				app.map(a[key], route + key);
-				break;
-			// get: function(){ ... }
-			case 'function':
-				app[key](route, a[key]);
-				break;
-		}
-	}
-};
+// Setup api versions
+betaApi(api);
+//v1Api(api);
 
-app.map({
-	'/users': {
-		get: users.list,
-		del: users.del,
-		'/:uid': {
-			get: users.get,
-			'/pets': {
-				get: pets.list,
-				'/:pid': {
-					del: pets.del
-				}
-			}
-		}
-}
-});
+
+
+// Allowing all CORs, for now
+swagger.setHeaders = function setHeaders(res) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, X-API-KEY');
+  res.header('Content-Type', 'application/json; charset=utf-8');
+};
 
 api.listen(3000);
