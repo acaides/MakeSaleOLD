@@ -53,4 +53,6 @@ exports.bind = function MSBetaApiBinder (api) {
 
     //swagger.addValidator(function MSExampleValidator (req, path, httpMethod) {});
     swagger.addModels(resourceModel);
+
+    return beta;
 };

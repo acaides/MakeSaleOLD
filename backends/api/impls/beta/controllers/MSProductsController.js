@@ -1,4 +1,4 @@
-module.exports = function MSProductsControllerConstructor (api) {
+exports.bind = function MSProductsControllerBinder (api) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         offsetQueryParamSpec = swagger.queryParam(
@@ -88,7 +88,7 @@ module.exports = function MSProductsControllerConstructor (api) {
             summary: 'Create Multiple Products',
             method: 'GET',
             params: [
-                swagger.bodyParam(
+                swagger.postParam(
                     // name:
                     'newProductsList',
                     // description:
@@ -103,7 +103,7 @@ module.exports = function MSProductsControllerConstructor (api) {
         },
 
         action: function MSProductsControllerRetrieveProductsList (req, res) {
-
+            res.json({});
         }
     });
 
@@ -140,13 +140,17 @@ module.exports = function MSProductsControllerConstructor (api) {
         action: function MSProductsControllerRetrieveProductsList (req, res) {
             validatePagingParams(req);
             validateFieldsParam(req);
-
+            res.json({
+                'This': 'is',
+                a: 'sample',
+                api: 'response.'
+            });
         }
     });
 
-    // Setup "updateProducts"
-    api.addPut({});
+    // // Setup "updateProducts"
+    // api.addPut({});
 
-    // Setup "deleteProducts"
-    api.addDelete({});
+    // // Setup "deleteProducts"
+    // api.addDelete({});
 };
