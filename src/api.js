@@ -1,4 +1,5 @@
 var config = require('config'),
+	listeningPortNumber = process.env.PORT || config.portNumber,
 	apiConfig = config.api,
 	_ = require('lodash'),
 	express = require('express'),
@@ -26,5 +27,5 @@ _.forEach(apiConfig.impls, function (implName) {
 	impl.bind(api).disable('x-powered-by');
 });
 
-console.log('listening on port ' + apiConfig.portNumber);
-api.listen(apiConfig.portNumber);
+console.log('listening on port ' + listeningPortNumber);
+api.listen(listeningPortNumber);

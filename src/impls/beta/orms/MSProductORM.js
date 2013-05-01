@@ -4,6 +4,7 @@ exports.bind = function MSProductORMBinder ($) {
 			Product: $.define('Product', {
 				name: Sequelize.STRING,
 				description: Sequelize.TEXT,
+				imgUrl: Sequelize.TEXT,
 				unitPrice: Sequelize.DECIMAL(12, 5), // 9999999.99999
 				unit: Sequelize.STRING
 			}),
