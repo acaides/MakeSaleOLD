@@ -12,7 +12,8 @@
     "memcached": "~0.2.2",
     "config": "~0.4.24",
     "lodash": "~1.2.0",
-    "sequelize-mysql": "~1.6.0"
+    "sequelize-mysql": "~1.6.0",
+    "uuid": "~1.4.1"
   },
   "dependencies": {
     "swagger-node-express": "~1.2.3",
@@ -21,7 +22,8 @@
     "memcached": "~0.2.2",
     "config": "~0.4.24",
     "lodash": "~1.2.0",
-    "sequelize-mysql": "~1.6.0"
+    "sequelize-mysql": "~1.6.0",
+    "uuid": "~1.4.1"
   },
   "readmeFilename": "README.md",
   "repository": {
