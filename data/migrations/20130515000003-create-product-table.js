@@ -5,7 +5,7 @@ module.exports = {
 				name: DataTypes.STRING,
 				description: DataTypes.TEXT,
 				unit: DataTypes.STRING,
-				unitPrice: DataTypes.DECIMAL(12, 5);
+				unitPrice: DataTypes.DECIMAL(12, 5)
 			}
 		);
 

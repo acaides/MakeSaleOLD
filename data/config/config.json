@@ -1,20 +1,20 @@
 {
     "development": {
         "username": "root",
-        "password": "3terna1Return",
-        "database": "MakeSale",
+        "password": "This Has All Happened Before",
+        "database": "makesale",
         "host": "127.0.0.1"
     },
     "test": {
         "username": "root",
-        "password": null,
-        "database": "database_test",
+        "password": "3terna1Return",
+        "database": "makesale",
         "host": "127.0.0.1"
     },
     "production": {
         "username": "root",
-        "password": null,
-        "database": "database_production",
+        "password": "3terna1Return",
+        "database": "makesale",
         "host": "127.0.0.1"
     }
 }

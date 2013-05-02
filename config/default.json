@@ -12,8 +12,8 @@
 		},
 
 		"resourceModels": {
-			"MSProductResourceModel": "../../models/resources/beta/MSProductResourceModel",
-			"MSMakerResourceModel": "../../models/resources/beta/MSMakerResourceModel"
+			"MSProductResourceModel": "../models/resources/beta/MSProductResourceModel",
+			"MSMakerResourceModel": "../models/resources/beta/MSMakerResourceModel"
 		},
 
 		"orms": {
