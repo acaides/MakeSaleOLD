@@ -1,38 +1,53 @@
-exports.bind = function MSProductsControllerBinder (api) {
+exports.bind = function MSUsersControllerBinder (api) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         paging = require('./MSPagingHelper'),
         fields = require('./MSFieldsHelper');
 
-    // Setup "createUsers"
+    // Setup "createUser"
     api.addPost({
         spec: {
-            description: 'Create multiple new Users.',
+            description: 'Create a new User.',
             path: '/users',
-            notes: 'Creates new Users.',
-            summary: 'Create Multiple Users',
+            notes: 'Called by an application on behalf of a new user in order to create a MakeSale account.',
+            summary: 'Create a new User.',
             method: 'POST',
             params: [
                 swagger.postParam(
                     // name:
-                    'newUsersList',
+                    'newUser',
                     // description:
-                    'A List of new Users to be created.',
+                    'The new User to be created.',
                     // dataType:
-                    'List'
+                    'User'
                 )
             ],
-            responseClass: 'List',
+            responseClass: 'User',
             errorResponses: [
-                paging.offsetQueryParamError,
-                paging.limitQueryParamError,
                 fields.queryParamError
             ],
-            nickname : 'createUsers'
+            nickname : 'createUser'
         },
 
-        action: function MSUsersControllerCreateUsers (req, res) {
-            res.json([]);
+        action: function MSUsersControllerCreateUser (req, res) {
+            res.json({});
+        }
+    });
+
+    api.addPost({
+        spec: {
+            description: 'Verify a newly created User.',
+            path: '/verifyUser',
+            notes: 'Called by an application to verify a newly-created User using the token provided to the user.',
+            summary: 'Verify a new User.',
+            method: 'POST',
+            params: [ /* the verification token parameter */ ],
+            responseClass: 'User',
+            errorResponss: [ /* bad verification token, out of time, etc */ ]
+        },
+
+        action: function MSUsersControllerVerifyUser (req, res) {
+
         }
     });
 
