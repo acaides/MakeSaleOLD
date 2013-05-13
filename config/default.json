@@ -8,16 +8,21 @@
 		"module": "./impls/beta/MSBetaApi.js",
 
 		"controllers": {
-			"MSProductsController": "./impls/beta/controllers/MSProductsController"
+			"MSProductsController": "./impls/beta/controllers/MSProductsController",
+			"MSTokensController": "./impls/beta/controllers/MSTokensController",
+			"MSUsersController": "./impls/beta/controllers/MSUsersController"
 		},
 
 		"resourceModels": {
 			"MSProductResourceModel": "../models/resources/beta/MSProductResourceModel",
-			"MSMakerResourceModel": "../models/resources/beta/MSMakerResourceModel"
+			"MSTokenResourceModel": "../models/resources/beta/MSTokensResourceModel",
+			"MSUserResourceModel": "../models/resources/beta/MSUserResourceModel"
 		},
 
 		"orms": {
-			"MSProductORM": "./impls/beta/orms/MSProductORM"
+			"MSProductORM": "./impls/beta/orms/MSProductORM",
+			"MSTokenORM": "./impls/beta/orms/MSTokenORM",
+			"MSUserORM": "./impls/beta/orms/MSUserORM"
 		},
 		
 		"database": {

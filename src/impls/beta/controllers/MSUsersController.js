@@ -1,10 +1,10 @@
-exports.bind = function MSUsersControllerBinder (api) {
+exports.bind = function MSUsersControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         paging = require('./MSPagingHelper'),
         fields = require('./MSFieldsHelper');
 
-    // Setup "createUser"
+    // createUser
     api.addPost({
         spec: {
             description: 'Create a new User.',

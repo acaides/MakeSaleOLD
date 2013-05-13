@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "User",
+    "description": "A human user of MakeSale.",
+    "type": "object",
+    "properties": {
+    	"id": {
+    		"description": "The unique identifier for the User.",
+    		"type": "string"
+    	},
+    	"name": {
+    		"description": "The full name of the User.",
+    		"type": "string"
+    	},
+        "email": {
+            "description": "The email address of the User.",
+            "type": "string"
+        }
+    },
+    "required": [ "id", "name", "email" ]
+}

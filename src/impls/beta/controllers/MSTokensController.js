@@ -1,4 +1,4 @@
-exports.bind = function MSTokensControllerBinder (api) {
+exports.bind = function MSTokensControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         paging = require('./MSPagingHelper'),

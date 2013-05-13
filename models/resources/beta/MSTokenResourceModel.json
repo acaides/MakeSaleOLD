@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Token",
+    "description": "A Token representing a specific authority in the context of a User.",
+    "type": "object",
+    "properties": {
+    	"id": {
+    		"description": "The unique identifier for the Token.",
+    		"type": "string"
+    	},
+    	"name": {
+    		"description": "The display name for the Token.",
+    		"type": "string"
+    	},
+        "description": {
+            "description": "A description of the authority associated with the token.",
+            "type": "string"
+        }
+    },
+    "required": [ "id", "name", "description" ]
+}

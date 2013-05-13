@@ -1,14 +1,13 @@
-module.exports = {
-	bind: function MSUserORMBinder ($) {
-		var models = {
+exports.bind = function MSUserORMBinder ($) {
+	var Sequelize = require('sequelize'),
+		models = {
 			User: $.define('User', {
-				firstName: $.STRING,
-				lastName: $.STRING,
-				email: $.STRING,
-				hashword: $.TEXT
+				firstName: Sequelize.STRING,
+				lastName: Sequelize.STRING,
+				email: Sequelize.STRING,
+				hashword: Sequelize.TEXT
 			})
 		};
 
-		return models;
-	}
+	return models;
 };

@@ -19,35 +19,34 @@ exports.bind = function MSBetaApiBinder (api) {
         beta = express(),   // The beta API.
 
         // Resource controllers
-        // MSUsersController = require('./controllers/MSUsersController.js'),
-        // MSMakersController = require('MSMakersController.js'),
+        MSUsersController = require.main.require(betaConfig.controllers.MSUsersController),
+        MSTokensController = require.main.require(betaConfig.controllers.MSTokensController),
         MSProductsController = require.main.require(betaConfig.controllers.MSProductsController),
 
         // Resource models
         resourceModel = {
-            // User: require('MSUserResourceModel.json'),
-            // Maker: require('MSMakerResourceModel.json'),
+            User: require.main.require(betaConfig.resourceModels.MSUserResourceModel),
             Product: require.main.require(betaConfig.resourceModels.MSProductResourceModel)
         },
 
         // ORM 
-        // MSUserORM = require('MSUserORM.js'),
-        // MSMakerORM = require('MSMakerORM.js'),
+        MSUserORM = require.main.require(betaConfig.orms.MSUserORM),
+        MSTokenORM = require.main.require(betaConfig.orms.MSTokenORM),
         MSProductORM = require.main.require(betaConfig.orms.MSProductORM);
 
     // Bind the models to the db and compose the data model. 
-    // _.extend($$, MSUserORM.bind($));
-    // _.extend($$, MSMakerORM.bind($));
+    _.extend($$, MSUserORM.bind($));
+    _.extend($$, MSTokenORM.bind($));
     _.extend($$, MSProductORM.bind($));
 
     // Attach the beta API to the api service and setup swagger handling.
     api.use('/beta', beta);
     swagger.setAppHandler(beta);
 
-    // Bind resource controllers to the beta API and the data model.
-    // MSUsersController.bind(swagger, $$);
-    // MSMakersController.bind(swagger, $$);
-    MSProductsController.bind(swagger, $$);
+    // Bind resource controllers. 
+    MSUsersController.bind(swagger, $, $$);
+    MSTokensController.bind(swagger, $, $$);
+    MSProductsController.bind(swagger, $, $$);
 
     swagger.configure('http://api.makesale.co', 'beta');
 

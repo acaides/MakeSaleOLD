@@ -1,4 +1,4 @@
-exports.bind = function MSProductsControllerBinder (api) {
+exports.bind = function MSProductsControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         paging = require('./MSPagingHelper'),
