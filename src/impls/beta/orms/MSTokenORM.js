@@ -5,7 +5,7 @@ module.exports.bind = function MSTokenORMBinder ($) {
 				id: Sequelize.STRING,
 				name: Sequelize.STRING,
 				description: Sequelize.TEXT
-			})
+			}, { freezeTableName: true })
 		};
 
 	return models;

@@ -33,7 +33,7 @@
 		},
 		
 		"database": {
-			"name": "MakeSale",
+			"name": "makesale",
 			"host": "127.0.0.1",
 			"user": "msapi",
 			"password": "3terna1Return"

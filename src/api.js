@@ -11,7 +11,7 @@ var config = require('config'),
 	// solrClient = solr.createClient(config.search.clientOptions),
 
 // Setup some basic middleware used by all impls
-api.use(express.json());	// Parse request body JSON.
+api.use(express.bodyParser());	// Parse request body JSON.
 api.use(express.compress());	// Compress response body JSON.
 api.use(express.query());	// Parse query string parameters.
 api.disable('x-powered-by');

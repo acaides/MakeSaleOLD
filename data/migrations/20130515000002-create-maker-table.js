@@ -12,7 +12,15 @@ module.exports = {
 					allowNull: false
 				},
 				legalName: DataTypes.STRING,
-				description: DataTypes.TEXT
+				description: DataTypes.TEXT,
+				createdAt: {
+					type: DataTypes.DATE,
+					allowNull: false
+				},
+				updatedAt: {
+					type: DataTypes.DATE,
+					allowNull: false
+				}
 			}
 		);
 

@@ -19,6 +19,14 @@ module.exports = {
 				unitPrice: {
 					type: DataTypes.DECIMAL(12, 5),
 					allowNull: false
+				},
+				createdAt: {
+					type: DataTypes.DATE,
+					allowNull: false
+				},
+				updatedAt: {
+					type: DataTypes.DATE,
+					allowNull: false
 				}
 			}
 		);

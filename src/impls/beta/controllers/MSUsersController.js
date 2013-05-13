@@ -2,6 +2,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         betaConfig = require('config').beta,
+        uuid = require('uuid'),
         paging = require.main.require(betaConfig.utils.MSPagingHelper),
         fields = require.main.require(betaConfig.utils.MSFieldsHelper);
 
@@ -28,10 +29,21 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         },
 
         action: function MSUsersControllerCreateUser (req, res) {
-            // $$.User.create({
-            //     req.
-            // });
-            res.json({});
+            var userSpec = req.body;
+
+            userSpec.id = uuid.v4().toUpperCase().replace(/-/g, '');
+
+            $$.User.create({
+                id: userSpec.id,
+                name: userSpec.name,
+                email: userSpec.email,
+                password: userSpec.password
+            }).success(function (user) {
+                user.id = userSpec.id;
+                res.json(user);
+            }).error(function (err) {
+                res.send(err);
+            });
         }
     });
 
@@ -53,30 +65,34 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     // });
 
     //getUsers
-    // api.addGet({
-    //     spec: {
-    //         description: 'Retrieve a list of Users in the User\'s scope.',
-    //         path: '/users',
-    //         notes: 'Returns a list of Users visible to the User, paged and optionally filtered.',
-    //         summary: 'List Users',
-    //         method: 'GET',
-    //         params: [
-    //             _.cloneDeep(paging.offsetQueryParamSpec),
-    //             _.cloneDeep(paging.limitQueryParamSpec),
-    //             _.cloneDeep(fields.queryParamSpec)
-    //         ],
-    //         //responseClass: 'List',
-    //         errorResponses: [
-    //             paging.offsetQueryParamError,
-    //             paging.limitQueryParamError,
-    //             fields.queryParamError
-    //         ],
-    //         nickname : 'retrieveUsersList'
-    //     },
-    //     action: function MSUsersControllerRetrieveUsersList (req, res) {
-    //         paging.validateParams(req);
-    //         fields.validateParam(req);
-    //         res.json([]);
-    //     }
-    // });
+    api.addGet({
+        spec: {
+            description: 'Retrieve a list of Users in the User\'s scope.',
+            path: '/users',
+            notes: 'Returns a list of Users visible to the User, paged and optionally filtered.',
+            summary: 'List Users',
+            method: 'GET',
+            params: [
+                _.cloneDeep(paging.offsetQueryParamSpec),
+                _.cloneDeep(paging.limitQueryParamSpec),
+                _.cloneDeep(fields.queryParamSpec)
+            ],
+            //responseClass: 'List',
+            errorResponses: [
+                paging.offsetQueryParamError,
+                paging.limitQueryParamError,
+                fields.queryParamError
+            ],
+            nickname : 'getUsers'
+        },
+        action: function MSUsersControllerGetUsers (req, res) {
+            paging.validateParams(req);
+            fields.validateParam(req);
+            $$.User.findAll().success(function (users) {
+                res.json(users);
+            }).error(function (err) {
+                res.send(err);
+            });
+        }
+    });
 };
