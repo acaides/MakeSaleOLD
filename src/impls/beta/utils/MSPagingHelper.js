@@ -1,6 +1,6 @@
 var swagger = require('swagger-node-express');
 
-exports = {
+module.exports = {
 	offsetQueryParamSpec: swagger.queryParam(
         // name:
         'offset',

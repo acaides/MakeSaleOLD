@@ -1,4 +1,4 @@
-exports.bind = function MSProductORMBinder ($) {
+module.exports.bind = function MSProductORMBinder ($) {
 	var Sequelize = require('sequelize-mysql').sequelize,
 		models = {
 			Product: $.define('Product', {

@@ -1,4 +1,4 @@
-exports.bind = function MSBetaApiBinder (api) {
+module.exports.bind = function MSBetaApiBinder (api) {
     var betaConfig = require('config').beta,
         express = require('express'),
         swagger = require('swagger-node-express'),

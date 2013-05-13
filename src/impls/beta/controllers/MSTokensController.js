@@ -1,8 +1,9 @@
-exports.bind = function MSTokensControllerBinder (api, $, $$) {
+module.exports.bind = function MSTokensControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
-        paging = require('./MSPagingHelper'),
-        fields = require('./MSFieldsHelper');
+        betaConfig = require('config').beta,
+        paging = require.main.require(betaConfig.utils.MSPagingHelper),
+        fields = require.main.require(betaConfig.utils.MSFieldsHelper);
 
     // getTokens 
     api.addGet({

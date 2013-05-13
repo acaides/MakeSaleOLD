@@ -24,6 +24,11 @@
 			"MSTokenORM": "./impls/beta/orms/MSTokenORM",
 			"MSUserORM": "./impls/beta/orms/MSUserORM"
 		},
+
+		"utils": {
+			"MSFieldsHelper": "./impls/beta/utils/MSFieldsHelper",
+			"MSPagingHelper": "./impls/beta/utils/MSPagingHelper"
+		},
 		
 		"database": {
 			"name": "MakeSale",

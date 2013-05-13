@@ -1,5 +1,5 @@
-exports.bind = function MSUserORMBinder ($) {
-	var Sequelize = require('sequelize'),
+module.exports.bind = function MSUserORMBinder ($) {
+	var Sequelize = require('sequelize-mysql').sequelize,
 		models = {
 			User: $.define('User', {
 				firstName: Sequelize.STRING,

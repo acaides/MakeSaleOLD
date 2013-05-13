@@ -1,4 +1,4 @@
-exports = function MSAuthMiddlewareConstructor () {
+module.exports = function MSAuthMiddlewareConstructor () {
 	return function MSAuthMiddlware (req, res, next) {
 		// look for processed HTTP Basic Auth
 		// if present, use it to create/fetch an access token

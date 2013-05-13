@@ -1,6 +1,6 @@
 var config = require('config'),
-	listeningPortNumber = process.env.PORT || config.portNumber,
 	apiConfig = config.api,
+	listeningPortNumber = process.env.PORT || apiConfig.portNumber,
 	_ = require('lodash'),
 	express = require('express'),
 	api = express(),

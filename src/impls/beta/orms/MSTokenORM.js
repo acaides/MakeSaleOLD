@@ -1,4 +1,4 @@
-exports.bind = function MSTokenORMBinder ($) {
+module.exports.bind = function MSTokenORMBinder ($) {
 	var Sequelize = require('sequelize-mysql').sequelize,
 		models = {
 			Token: $.define('Token', {

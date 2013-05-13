@@ -1,8 +1,9 @@
-exports.bind = function MSProductsControllerBinder (api, $, $$) {
+module.exports.bind = function MSProductsControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
-        paging = require('./MSPagingHelper'),
-        fields = require('./MSFieldsHelper');
+        betaConfig = require('config').beta,
+        paging = require.main.require(betaConfig.utils.MSPagingHelper),
+        fields = require.main.require(betaConfig.utils.MSFieldsHelper);
 
     // Setup "createProducts"
     api.addPost({
@@ -36,7 +37,7 @@ exports.bind = function MSProductsControllerBinder (api, $, $$) {
         }
     });
 
-    // Setup "retrieveProductsList"
+    // getProducts
     api.addGet({
         spec: {
             description: 'Retrieve a list of Products in the User\'s scope.',

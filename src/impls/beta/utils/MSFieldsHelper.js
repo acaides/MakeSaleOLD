@@ -1,6 +1,6 @@
 var swagger = require('swagger-node-express');
 
-exports = {
+module.exports = {
 	queryParamSpec: swagger.queryParam(
         // name:
         'fields',
