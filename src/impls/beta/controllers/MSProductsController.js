@@ -14,7 +14,7 @@ module.exports.bind = function MSProductsControllerBinder (api, $, $$) {
             summary: 'Create Multiple Products',
             method: 'GET',
             params: [
-                swagger.postParam(
+                swagger.bodyParam(
                     // name:
                     'newProductsList',
                     // description:

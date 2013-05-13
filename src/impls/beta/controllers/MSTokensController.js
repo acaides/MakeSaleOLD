@@ -52,7 +52,7 @@ module.exports.bind = function MSTokensControllerBinder (api, $, $$) {
             summary: 'Create a Token.',
             method: 'GET',
             params: [
-                swagger.postParam(
+                swagger.bodyParam(
                     // name:
                     'tokenSpecification',
                     // description:

@@ -5,6 +5,8 @@
 	},
 
 	"beta": {
+		"baseUrl": "http://localhost:3000/beta",
+
 		"module": "./impls/beta/MSBetaApi.js",
 
 		"controllers": {

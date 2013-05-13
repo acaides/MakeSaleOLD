@@ -25,8 +25,10 @@ module.exports.bind = function MSBetaApiBinder (api) {
 
         // Resource models
         resourceModel = {
-            User: require.main.require(betaConfig.resourceModels.MSUserResourceModel),
-            Product: require.main.require(betaConfig.resourceModels.MSProductResourceModel)
+            models: {
+                User: require.main.require(betaConfig.resourceModels.MSUserResourceModel),
+                Product: require.main.require(betaConfig.resourceModels.MSProductResourceModel)
+            }
         },
 
         // ORM 
@@ -48,10 +50,24 @@ module.exports.bind = function MSBetaApiBinder (api) {
     MSTokensController.bind(swagger, $, $$);
     MSProductsController.bind(swagger, $, $$);
 
-    swagger.configure('http://api.makesale.co', 'beta');
-
-    //swagger.addValidator(function MSExampleValidator (req, path, httpMethod) {});
+    swagger.configureSwaggerPaths('', '/api-docs', '');
+    swagger.configure(betaConfig.baseUrl, 'beta');
     swagger.addModels(resourceModel);
+    // swagger.setHeaders = function setHeaders(res) {
+    //     res.header('Access-Control-Allow-Origin', '*');
+    //     res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, PATCH, OPTIONS');
+    //     res.header('Access-Control-Allow-Headers', 'Content-Type');
+    //     res.header('Content-Type', 'application/json; charset=utf-8');
+    // };
+
+    beta.options('*', function (req, res) {
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, PATCH, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        res.set('Content-Type', 'application/json; charset=utf-8');
+        res.set('Allow', 'GET, POST, DELETE, PUT, PATCH, OPTIONS');
+        res.send();
+    });
 
     return beta;
 };

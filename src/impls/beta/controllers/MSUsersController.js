@@ -14,23 +14,23 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             summary: 'Create a new User.',
             method: 'POST',
             params: [
-                swagger.postParam(
+                swagger.bodyParam(
                     // name:
-                    'newUser',
+                    'userSpec',
                     // description:
-                    'The new User to be created.',
+                    'A specification of a User to be created.',
                     // dataType:
-                    'User'
+                    'UserSpec'
                 )
             ],
             responseClass: 'User',
-            errorResponses: [
-                fields.queryParamError
-            ],
             nickname : 'createUser'
         },
 
         action: function MSUsersControllerCreateUser (req, res) {
+            // $$.User.create({
+            //     req.
+            // });
             res.json({});
         }
     });
@@ -53,30 +53,30 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     // });
 
     //getUsers
-    api.addGet({
-        spec: {
-            description: 'Retrieve a list of Users in the User\'s scope.',
-            path: '/users',
-            notes: 'Returns a list of Users visible to the User, paged and optionally filtered.',
-            summary: 'List Users',
-            method: 'GET',
-            params: [
-                _.cloneDeep(paging.offsetQueryParamSpec),
-                _.cloneDeep(paging.limitQueryParamSpec),
-                _.cloneDeep(fields.queryParamSpec)
-            ],
-            responseClass: 'List',
-            errorResponses: [
-                paging.offsetQueryParamError,
-                paging.limitQueryParamError,
-                fields.queryParamError
-            ],
-            nickname : 'retrieveUsersList'
-        },
-        action: function MSUsersControllerRetrieveUsersList (req, res) {
-            paging.validateParams(req);
-            fields.validateParam(req);
-            res.json([]);
-        }
-    });
+    // api.addGet({
+    //     spec: {
+    //         description: 'Retrieve a list of Users in the User\'s scope.',
+    //         path: '/users',
+    //         notes: 'Returns a list of Users visible to the User, paged and optionally filtered.',
+    //         summary: 'List Users',
+    //         method: 'GET',
+    //         params: [
+    //             _.cloneDeep(paging.offsetQueryParamSpec),
+    //             _.cloneDeep(paging.limitQueryParamSpec),
+    //             _.cloneDeep(fields.queryParamSpec)
+    //         ],
+    //         //responseClass: 'List',
+    //         errorResponses: [
+    //             paging.offsetQueryParamError,
+    //             paging.limitQueryParamError,
+    //             fields.queryParamError
+    //         ],
+    //         nickname : 'retrieveUsersList'
+    //     },
+    //     action: function MSUsersControllerRetrieveUsersList (req, res) {
+    //         paging.validateParams(req);
+    //         fields.validateParam(req);
+    //         res.json([]);
+    //     }
+    // });
 };
