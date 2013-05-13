@@ -72,8 +72,8 @@ module.exports.bind = function MSProductsControllerBinder (api, $, $$) {
         },
 
         action: function MSProductsControllerRetrieveProductsList (req, res) {
-            validatePagingParams(req);
-            validateFieldsParam(req);
+            paging.validateParams(req);
+            fields.validateParam(req);
             res.json([]);
         }
     });

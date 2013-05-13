@@ -52,31 +52,31 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     //     }
     // });
 
-    // getUsers
-    // api.addGet({
-    //     spec: {
-    //         description: 'Retrieve a list of Users in the User\'s scope.',
-    //         path: '/users',
-    //         notes: 'Returns a list of Users visible to the User, paged and optionally filtered.',
-    //         summary: 'List Users',
-    //         method: 'GET',
-    //         params: [
-    //             _.cloneDeep(paging.offsetQueryParamSpec),
-    //             _.cloneDeep(paging.limitQueryParamSpec),
-    //             _.cloneDeep(fields.queryParamSpec)
-    //         ],
-    //         responseClass: 'List',
-    //         errorResponses: [
-    //             paging.offsetQueryParamError,
-    //             paging.limitQueryParamError,
-    //             fields.queryParamError
-    //         ],
-    //         nickname : 'retrieveUsersList'
-    //     },
-    //     action: function MSUsersControllerRetrieveUsersList (req, res) {
-    //         paging.validateParams(req);
-    //         fields.validateParam(req);
-    //         res.json([]);
-    //     }
-    // });
+    //getUsers
+    api.addGet({
+        spec: {
+            description: 'Retrieve a list of Users in the User\'s scope.',
+            path: '/users',
+            notes: 'Returns a list of Users visible to the User, paged and optionally filtered.',
+            summary: 'List Users',
+            method: 'GET',
+            params: [
+                _.cloneDeep(paging.offsetQueryParamSpec),
+                _.cloneDeep(paging.limitQueryParamSpec),
+                _.cloneDeep(fields.queryParamSpec)
+            ],
+            responseClass: 'List',
+            errorResponses: [
+                paging.offsetQueryParamError,
+                paging.limitQueryParamError,
+                fields.queryParamError
+            ],
+            nickname : 'retrieveUsersList'
+        },
+        action: function MSUsersControllerRetrieveUsersList (req, res) {
+            paging.validateParams(req);
+            fields.validateParam(req);
+            res.json([]);
+        }
+    });
 };
