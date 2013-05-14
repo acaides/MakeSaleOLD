@@ -1,8 +1,15 @@
 module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
-        betaConfig = require('config').beta,
         uuid = require('uuid'),
+        passwordHash = require('password-hash'),
+        JaySchema = require('jayschema'),
+        betaConfig = require('config').beta,
+        js = new JaySchema(),
+        resourceModels = {
+            MSUser: require.main.require(betaConfig.resourceModels.MSUser),
+            MSUserSpec: require.main.require(betaConfig.resourceModels.MSUserSpec)
+        },
         paging = require.main.require(betaConfig.utils.MSPagingHelper),
         fields = require.main.require(betaConfig.utils.MSFieldsHelper);
 
@@ -14,36 +21,56 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             notes: 'Called by an application on behalf of a new user in order to create a MakeSale account.',
             summary: 'Create a new User.',
             method: 'POST',
-            params: [
-                swagger.bodyParam(
-                    // name:
-                    'userSpec',
-                    // description:
-                    'A specification of a User to be created.',
-                    // dataType:
-                    'UserSpec'
-                )
-            ],
+            params: [ swagger.bodyParam('userSpec', 'The specification for the new User to be created.', 'UserSpec') ],
             responseClass: 'User',
             nickname : 'createUser'
         },
 
         action: function MSUsersControllerCreateUser (req, res) {
-            var userSpec = req.body;
+            var userSpec = req.body,
+                specErrs = js.validate(userSpec, resourceModels.MSUserSpec),
+                createNewUser = function (userSpec) {
+                    userSpec.id = uuid.v4().toUpperCase().replace(/-/g, '');
 
-            userSpec.id = uuid.v4().toUpperCase().replace(/-/g, '');
+                    $$.User.create({
+                        id: userSpec.id,
+                        name: userSpec.name,
+                        email: userSpec.email,
+                        password: passwordHash.generate(userSpec.password)
+                    }).success(function (user) {
+                        user.id = userSpec.id;
+                        delete user.password;
+                        res.json(user);
+                    }).error(function (err) {
+                        res.json(err);
+                    });
+                };
 
-            $$.User.create({
-                id: userSpec.id,
-                name: userSpec.name,
-                email: userSpec.email,
-                password: userSpec.password
-            }).success(function (user) {
-                user.id = userSpec.id;
-                res.json(user);
-            }).error(function (err) {
-                res.send(err);
-            });
+            if(specErrs && specErrs.length > 0) {
+                // The passed UserSpec was invalid.
+                res.json(specErrs);
+            } else {
+                // The passed UserSpec was syntactically correct, validate data.
+                // First, check for an existing User with the specified email.
+                $$.User.find({ where: { email: userSpec.email }})
+                    .success(function (user) {
+                        if(user) {
+                            res.json({ error: 'An existing MakeSale user is already registered with that email.' });
+                        } else {
+                            // Then, do basic checks on user name and password validity.
+                            if(userSpec.name.length === 0) {
+                                res.json({ error: 'User names cannot be empty.' });    
+                            } else if(userSpec.password.length < 8) {
+                                res.json( { error: 'User passwords must be at least 8 characters long.'});
+                            } else {
+                                createNewUser(userSpec);
+                            }
+                        }
+                    })
+                    .error(function (err) {
+                        res.json(err);
+                    });
+            }
         }
     });
 
@@ -88,11 +115,14 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         action: function MSUsersControllerGetUsers (req, res) {
             paging.validateParams(req);
             fields.validateParam(req);
-            $$.User.findAll().success(function (users) {
-                res.json(users);
-            }).error(function (err) {
-                res.send(err);
-            });
+
+            $$.User.findAll({ attributes: [ 'id', 'name', 'email', 'createdAt', 'updatedAt' ] })
+                .success(function (users) {
+                    res.json(users);
+                })
+                .error(function (err) {
+                    res.send(err);
+                });
         }
     });
 };

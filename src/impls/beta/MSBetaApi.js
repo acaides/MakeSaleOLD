@@ -26,8 +26,9 @@ module.exports.bind = function MSBetaApiBinder (api) {
         // Resource models
         resourceModel = {
             models: {
-                User: require.main.require(betaConfig.resourceModels.MSUserResourceModel),
-                Product: require.main.require(betaConfig.resourceModels.MSProductResourceModel)
+                User: require.main.require(betaConfig.resourceModels.MSUser),
+                Product: require.main.require(betaConfig.resourceModels.MSProduct),
+                UserSpec: require.main.require(betaConfig.resourceModels.MSUserSpec)
             }
         },
 

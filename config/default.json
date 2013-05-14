@@ -16,9 +16,10 @@
 		},
 
 		"resourceModels": {
-			"MSProductResourceModel": "../models/resources/beta/MSProductResourceModel",
-			"MSTokenResourceModel": "../models/resources/beta/MSTokensResourceModel",
-			"MSUserResourceModel": "../models/resources/beta/MSUserResourceModel"
+			"MSProduct": "../models/resources/beta/MSProduct",
+			"MSToken": "../models/resources/beta/MSTokens",
+			"MSUser": "../models/resources/beta/MSUser",
+			"MSUserSpec": "../models/resources/beta/MSUserSpec"
 		},
 
 		"orms": {

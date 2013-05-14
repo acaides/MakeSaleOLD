@@ -1,0 +1,20 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "UserSpec",
+    "description": "A specification for a new MakeSale User object to be created.",
+    "type": "object",
+    "properties": {
+    	"name": {
+    		"description": "The full name of the new User.",
+    		"type": "string"
+    	},
+        "email": {
+            "description": "The email address of the new User.",
+            "type": "string"
+        },
+        "password": {
+            "description": "The plain text password for the new User."
+        }
+    },
+    "required": [ "name", "email", "password" ]
+}
