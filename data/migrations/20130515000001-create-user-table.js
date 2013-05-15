@@ -7,6 +7,20 @@ module.exports = {
 					primaryKey: true,
 					allowNull: false
 				},
+				state: {
+					type: DataTypes.STRING,
+
+					// .ENUM(
+					// 	'ACTIVATING',
+					// 	'ACTIVE',
+					// 	'DELETING',
+					// 	'DELETED',
+					// 	'DISABLING',
+					// 	'DISABLED'
+					// ),
+
+					allowNull: false
+				},
 				name: {
 					type: DataTypes.STRING,
 					allowNull: false
