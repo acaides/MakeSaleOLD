@@ -35,6 +35,9 @@ module.exports.bind = function MSBetaApiBinder (api) {
             return $$;
         })({});
 
+    // Bind the mail transport.
+    swagger.mailTransport = api.mailTransport;
+
     // Attach the beta API to the api service and setup swagger handling.
     api.use('/beta', beta);
     swagger.setAppHandler(beta);

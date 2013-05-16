@@ -40,15 +40,28 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
                         password: passwordHash.generate(userSpec.password),
                         state: MSUserState.ACTIVATING
                     }).success(function (user) {
+                        var code = uuid.v4().replace(/-/g, '').toUpperCase();
+
                         $$.Confirmation.create({
-                            code: uuid.v4().replace(/-/g, '').toUpperCase(),
+                            code: code,
                             type: MSConfirmationType.USER_ACTIVATION,
                             action: JSON.stringify({
                                 userId: user.id
                             })
                         }).success(function (confirmation) {
                             delete user.password;
-                            res.json(user);
+                            api.mailTransport.sendMail({
+                                from: 'MakeSale <makesale@acaides.com>',
+                                to: user.email,
+                                subject: 'Confirm Your New MakeSale Account',
+                                text: 'Confirmation Code: ' + code
+                            }, function(error, response) {
+                                if(error) {
+                                    res.json(error);
+                                } else {
+                                    res.json(user);
+                                }
+                            });
                         }).error(function (err) {
                             user.destroy();
                             res.json(err);

@@ -1,7 +1,18 @@
 {
 	"api": {
 		"portNumber": 3000,
-		"impls": [ "beta" ]
+		"impls": [ "beta" ],
+		"mailTransportSetup": [
+			"SMTP",
+			{
+	        	"service": "Gmail",
+		        "auth": {
+		            "user": "makesale@acaides.com",
+		            "pass": "3terna1Return"
+		        },
+		        "debug": true
+		    }
+		]	
 	},
 
 	"beta": {
