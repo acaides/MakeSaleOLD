@@ -3,7 +3,8 @@ module.exports.bind = function MSConfirmationControllerBinder (api, $, $$) {
         _ = require('lodash'),
         passwordHash = require('password-hash'),
         betaConfig = require('config').beta,
-        MSConfirmationType = betaConfig.definitions.MSConfirmationType;
+        MSConfirmationType = betaConfig.definitions.MSConfirmationType,
+        MSUserState = betaConfig.definitions.MSUserState;
 
     // confirm
     api.addPost({
@@ -26,7 +27,42 @@ module.exports.bind = function MSConfirmationControllerBinder (api, $, $$) {
         },
 
         action: function MSConfirmationControllerConfirm (req, res) {
-            res.json({});
-        }
+            var code = req.params.confirmationCode;
+
+            $$.Confirmation.find({ where: { code: code } })
+                .success(function (confirmation) {
+                    var action = JSON.parse(confirmation.action),
+                        userId = action.userId;
+
+                    switch(confirmation.type) {
+                        case MSConfirmationType.USER_ACTIVATION:
+                            $.query('UPDATE `User` SET `state`=\'' + MSUserState.ACTIVE + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+                                .success(function () {
+                                    confirmation.destroy();
+                                    res.json({ msg: 'User successfully activated.' });
+                                })
+                                .error(function () {
+                                    res.json({ msg: 'Unable to confirm User activation.' });
+                                });
+                            break;
+                        case MSConfirmationType.USER_DELETION:
+                            $.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETED + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+                                .success(function (user) {
+                                    confirmation.destroy();
+                                    res.json({ msg: 'User successfully deleted.' });
+                                })
+                                .error(function () {
+                                    res.json({ msg: 'Unable to confirm User activation.' });
+                                });
+                            break;
+                        case MSConfirmationType.USER_UPDATE:
+                            res.json({ msg: 'User updates not yet supported.' });
+                            break;
+                    }
+                })
+                .error(function (err) {
+                    res.json(err);
+                });
+            }
     });
 };

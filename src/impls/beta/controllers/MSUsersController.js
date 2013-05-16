@@ -43,7 +43,9 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
                         $$.Confirmation.create({
                             code: uuid.v4().replace(/-/g, '').toUpperCase(),
                             type: MSConfirmationType.USER_ACTIVATION,
-                            action: ''
+                            action: JSON.stringify({
+                                userId: user.id
+                            })
                         }).success(function (confirmation) {
                             delete user.password;
                             res.json(user);
@@ -109,21 +111,23 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
 
             $.query('UPDATE `User` SET `state`=\'' + MSUserState.UPDATING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
             .success(function() {
-                res.json({ msg: 'Confirming User update.' });
+                $$.Confirmation.create({
+                    code: uuid.v4().replace(/-/g, '').toUpperCase(),
+                    type: MSConfirmationType.USER_UPDATE,
+                    action: JSON.stringify({
+                        userId: userId,
+                        patch: userPatch
+                    })
+                }).success(function (confirmation) {
+                    res.json({ msg: 'Confirming User update.' });
+                }).error(function (err) {
+                    user.destroy();
+                    res.json(err);
+                });
             })
             .error(function (err) {
                res.json(err);
-               // res.json({ msg: 'Unable to mark specified User for update.' });
             });
-
-            // $$.User.find({ where: { id: userId }})
-            // .success(function (user) {
-            //     jsonPatch.apply(user, userPatch);
-            //     user.save()               
-            // })
-            // .error(function (err) {
-            //     res.json(err);
-            // });
         }
     });
 
@@ -149,7 +153,17 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
 
             $.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
                 .success(function() {
-                    res.json({ msg: 'Confirming User deletion.' });
+                    $$.Confirmation.create({
+                            code: uuid.v4().replace(/-/g, '').toUpperCase(),
+                            type: MSConfirmationType.USER_DELETION,
+                            action: JSON.stringify({
+                                userId: userId
+                            })
+                        }).success(function (confirmation) {
+                            res.json({ msg: 'Confirming User deletion.' });
+                        }).error(function (err) {
+                            res.json(err);
+                        });
                 })
                 .error(function (err) {
                    res.json(err);
