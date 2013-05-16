@@ -1,7 +1,6 @@
 module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
-        uuid = require('uuid'),
         jsonPatch = require('json-patch');
         passwordHash = require('password-hash'),
         JaySchema = require('jayschema'),
@@ -32,16 +31,12 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             var userSpec = req.body,
                 specErrs = js.validate(userSpec, resourceModels.MSUserSpec),
                 createNewUser = function (userSpec) {
-                    userSpec.id = uuid.v4().toUpperCase().replace(/-/g, '');
-
                     $$.User.create({
-                        id: userSpec.id,
                         name: userSpec.name,
                         email: userSpec.email,
                         password: passwordHash.generate(userSpec.password),
                         state: 'ACTIVATING'
                     }).success(function (user) {
-                        user.id = userSpec.id;
                         delete user.password;
                         res.json(user);
                     }).error(function (err) {
@@ -86,7 +81,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             notes: 'Called by an application to confirm the specified action on the specified user.',
             summary: 'Confirm an action that modifies the User state.',
             method: 'POST',
-            params: [ 
+            params: [
                 swagger.pathParam(
                     'userId',
                     'The unique identifier for the User to be marked for deletion.',
@@ -103,7 +98,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         },
 
         action: function MSUsersControllerConfirmUserAction (req, res) {
-            res.json({});           
+            res.json({});
         }
     });
 
@@ -161,7 +156,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             params: [
                 swagger.pathParam(
                     'userId',
-                    'The unique identifier for the User to be marked for deletion.', 
+                    'The unique identifier for the User to be marked for deletion.',
                     'string'
                 )
             ],
@@ -226,7 +221,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             paging.validateParams(req);
             fields.validateParam(req);
 
-            $$.User.findAll({ 
+            $$.User.findAll({
                 attributes: [ 'id', 'name', 'email', 'createdAt', 'updatedAt', 'state'],
                 where: 'state != \'DELETED\''
             })

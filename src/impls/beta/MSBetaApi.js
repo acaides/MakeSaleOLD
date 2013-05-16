@@ -21,26 +21,26 @@ module.exports.bind = function MSBetaApiBinder (api) {
         // Resource controllers
         MSUsersController = require.main.require(betaConfig.controllers.MSUsersController),
         MSTokensController = require.main.require(betaConfig.controllers.MSTokensController),
-        MSProductsController = require.main.require(betaConfig.controllers.MSProductsController),
+        //MSProductsController = require.main.require(betaConfig.controllers.MSProductsController),
 
         // Resource models
         resourceModel = {
             models: {
                 User: require.main.require(betaConfig.resourceModels.MSUser),
-                Product: require.main.require(betaConfig.resourceModels.MSProduct),
+                //Product: require.main.require(betaConfig.resourceModels.MSProduct),
                 UserSpec: require.main.require(betaConfig.resourceModels.MSUserSpec)
             }
         },
 
         // ORM 
         MSUserORM = require.main.require(betaConfig.orms.MSUserORM),
-        MSTokenORM = require.main.require(betaConfig.orms.MSTokenORM),
-        MSProductORM = require.main.require(betaConfig.orms.MSProductORM);
+        MSTokenORM = require.main.require(betaConfig.orms.MSTokenORM);
+        //MSProductORM = require.main.require(betaConfig.orms.MSProductORM);
 
     // Bind the models to the db and compose the data model. 
     _.extend($$, MSUserORM.bind($));
     _.extend($$, MSTokenORM.bind($));
-    _.extend($$, MSProductORM.bind($));
+    //_.extend($$, MSProductORM.bind($));
 
     // Attach the beta API to the api service and setup swagger handling.
     api.use('/beta', beta);
@@ -49,7 +49,7 @@ module.exports.bind = function MSBetaApiBinder (api) {
     // Bind resource controllers. 
     MSUsersController.bind(swagger, $, $$);
     MSTokensController.bind(swagger, $, $$);
-    MSProductsController.bind(swagger, $, $$);
+    //MSProductsController.bind(swagger, $, $$);
 
     swagger.configureSwaggerPaths('', '/api-docs', '');
     swagger.configure(betaConfig.baseUrl, 'beta');

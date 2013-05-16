@@ -1,18 +1,17 @@
 module.exports = {
     up: function (migration, DataTypes, done) {
-        migration.createTable('User',
+        migration.createTable('Confirmation',
             {
                 id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-                state: { type: DataTypes.STRING, allowNull: false },
-                name: { type: DataTypes.STRING, allowNull: false },
-                email: { type: DataTypes.STRING, allowNull: false },
-                password: { type: DataTypes.TEXT, allowNull: false },
+                code: { type: DataTypes.STRING, allowNull: false },
+                type: { type: DataTypes.INTEGER, allowNull: false },
+                action: { type: DataTypes.TEXT },
                 createdAt: { type: DataTypes.DATE, allowNull: false },
                 updatedAt: { type: DataTypes.DATE, allowNull: false }
             }
         );
 
-        migration.addIndex('User', [ 'email' ]);
+        migration.addIndex('Confirmation', [ 'code' ]);
 
         done();
     },

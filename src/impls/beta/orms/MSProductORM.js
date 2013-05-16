@@ -2,6 +2,7 @@ module.exports.bind = function MSProductORMBinder ($) {
 	var Sequelize = require('sequelize-mysql').sequelize,
 		models = {
 			Product: $.define('Product', {
+				id: { type: Sequelize.BIGINT, primaryKey: true, autoIncrement: true },
 				name: Sequelize.STRING,
 				description: Sequelize.TEXT,
 				imgUrl: Sequelize.TEXT,
