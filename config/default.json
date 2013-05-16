@@ -25,12 +25,30 @@
 		"orms": {
 			"MSProductORM": "./impls/beta/orms/MSProductORM",
 			"MSTokenORM": "./impls/beta/orms/MSTokenORM",
-			"MSUserORM": "./impls/beta/orms/MSUserORM"
+			"MSUserORM": "./impls/beta/orms/MSUserORM",
+			"MSConfirmationORM": "./impls/beta/orms/MSConfirmationORM"
 		},
 
 		"utils": {
 			"MSFieldsHelper": "./impls/beta/utils/MSFieldsHelper",
 			"MSPagingHelper": "./impls/beta/utils/MSPagingHelper"
+		},
+
+		"definitions": {
+			"MSConfirmationType" : {
+				"USER_ACTIVATION": 1,
+				"USER_DELETION": 2,
+				"USER_EMAIL_UPDATE": 3,
+				"USER_NAME_UPDATE": 4,
+				"USER_PASSWORD_UPDATE": 5
+			},
+			"MSUserState": {
+				"ACTIVE": 1,
+				"ACTIVATING": 2,
+				"DELETED": 3,
+				"DELETING": 4,
+				"UPDATING": 5 
+			}
 		},
 		
 		"database": {

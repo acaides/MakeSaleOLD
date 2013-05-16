@@ -3,7 +3,7 @@ module.exports = {
         migration.createTable('User',
             {
                 id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-                state: { type: DataTypes.STRING, allowNull: false },
+                state: { type: DataTypes.INTEGER, allowNull: false },
                 name: { type: DataTypes.STRING, allowNull: false },
                 email: { type: DataTypes.STRING, allowNull: false },
                 password: { type: DataTypes.TEXT, allowNull: false },

@@ -1,10 +1,13 @@
 module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
+        uuid = require('uuid'),
         jsonPatch = require('json-patch');
         passwordHash = require('password-hash'),
         JaySchema = require('jayschema'),
         betaConfig = require('config').beta,
+        MSConfirmationType = betaConfig.definitions.MSConfirmationType,
+        MSUserState = betaConfig.definitions.MSUserState,
         js = new JaySchema(),
         resourceModels = {
             MSUser: require.main.require(betaConfig.resourceModels.MSUser),
@@ -35,10 +38,19 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
                         name: userSpec.name,
                         email: userSpec.email,
                         password: passwordHash.generate(userSpec.password),
-                        state: 'ACTIVATING'
+                        state: MSUserState.ACTIVATING
                     }).success(function (user) {
-                        delete user.password;
-                        res.json(user);
+                        $$.Confirmation.create({
+                            code: uuid.v4().replace(/-/g, '').toUpperCase(),
+                            type: MSConfirmationType.USER_ACTIVATION,
+                            action: ''
+                        }).success(function (confirmation) {
+                            delete user.password;
+                            res.json(user);
+                        }).error(function (err) {
+                            user.destroy();
+                            res.json(err);
+                        });
                     }).error(function (err) {
                         res.json(err);
                     });
@@ -125,7 +137,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             var userId = req.params.userId,
                 userPatch = req.body;
 
-            $.query('UPDATE `User` SET `state`=\'UPDATING\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+            $.query('UPDATE `User` SET `state`=\'' + MSUserState.UPDATING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
             .success(function() {
                 res.json({ msg: 'Confirming User update.' });
             })
@@ -165,7 +177,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         action: function MSUsersControllerDeleteUser (req, res) {
             var userId = req.params.userId;
 
-            $.query('UPDATE `User` SET `state`=\'DELETING\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+            $.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
                 .success(function() {
                     res.json({ msg: 'Confirming User deletion.' });
                 })
@@ -223,7 +235,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
 
             $$.User.findAll({
                 attributes: [ 'id', 'name', 'email', 'createdAt', 'updatedAt', 'state'],
-                where: 'state != \'DELETED\''
+                where: 'state != \'' + MSUserState.DELETED + '\''
             })
             .success(function (users) {
                 res.json(users);

@@ -34,12 +34,14 @@ module.exports.bind = function MSBetaApiBinder (api) {
 
         // ORM 
         MSUserORM = require.main.require(betaConfig.orms.MSUserORM),
+        MSConfirmationORM = require.main.require(betaConfig.orms.MSConfirmationORM),
         MSTokenORM = require.main.require(betaConfig.orms.MSTokenORM);
         //MSProductORM = require.main.require(betaConfig.orms.MSProductORM);
 
     // Bind the models to the db and compose the data model. 
     _.extend($$, MSUserORM.bind($));
     _.extend($$, MSTokenORM.bind($));
+    _.extend($$, MSConfirmationORM.bind($));
     //_.extend($$, MSProductORM.bind($));
 
     // Attach the beta API to the api service and setup swagger handling.

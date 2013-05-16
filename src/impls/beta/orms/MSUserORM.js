@@ -3,7 +3,7 @@ module.exports.bind = function MSUserORMBinder ($) {
         models = {
             User: $.define('User', {
                 id: { type: Sequelize.BIGINT, primaryKey: true, autoIncrement: true },
-                state: { type: Sequelize.STRING, allowNull: false },
+                state: { type: Sequelize.INTEGER, allowNull: false },
                 name: { type: Sequelize.STRING, allowNull: false },
                 email: { type: Sequelize.STRING, allowNull: false },
                 password: { type: Sequelize.STRING, allowNull: false }
