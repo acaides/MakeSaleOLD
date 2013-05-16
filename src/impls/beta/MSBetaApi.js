@@ -14,44 +14,35 @@ module.exports.bind = function MSBetaApiBinder (api) {
             betaConfig.database.password
         ),
 
-        $$ = {},    // The MakeSale data model. 
+        // The beta API.
+        beta = express(),
 
-        beta = express(),   // The beta API.
+        // resource models
+        resourceModel = (function (resourceModels) {
+            _.forEach(betaConfig.resourceModels, function (rmPath, rmName) {
+                resourceModels.models[rmName] = require.main.require(rmPath);
+            });
 
-        // Resource controllers
-        MSUsersController = require.main.require(betaConfig.controllers.MSUsersController),
-        MSTokensController = require.main.require(betaConfig.controllers.MSTokensController),
-        //MSProductsController = require.main.require(betaConfig.controllers.MSProductsController),
+            return resourceModels;
+        })({ models: {} }),
 
-        // Resource models
-        resourceModel = {
-            models: {
-                User: require.main.require(betaConfig.resourceModels.MSUser),
-                //Product: require.main.require(betaConfig.resourceModels.MSProduct),
-                UserSpec: require.main.require(betaConfig.resourceModels.MSUserSpec)
-            }
-        },
+        // The MakeSale data model. 
+        $$ = (function ($$) {
+            _.forEach(betaConfig.orms, function (ormPath, ormName) {
+                _.extend($$, require.main.require(ormPath).bind($));
+            });
 
-        // ORM 
-        MSUserORM = require.main.require(betaConfig.orms.MSUserORM),
-        MSConfirmationORM = require.main.require(betaConfig.orms.MSConfirmationORM),
-        MSTokenORM = require.main.require(betaConfig.orms.MSTokenORM);
-        //MSProductORM = require.main.require(betaConfig.orms.MSProductORM);
-
-    // Bind the models to the db and compose the data model. 
-    _.extend($$, MSUserORM.bind($));
-    _.extend($$, MSTokenORM.bind($));
-    _.extend($$, MSConfirmationORM.bind($));
-    //_.extend($$, MSProductORM.bind($));
+            return $$;
+        })({});
 
     // Attach the beta API to the api service and setup swagger handling.
     api.use('/beta', beta);
     swagger.setAppHandler(beta);
 
-    // Bind resource controllers. 
-    MSUsersController.bind(swagger, $, $$);
-    MSTokensController.bind(swagger, $, $$);
-    //MSProductsController.bind(swagger, $, $$);
+    // Bind controllers. 
+    _.forEach(betaConfig.controllers, function (cPath, cName) {
+        require.main.require(cPath).bind(swagger, $, $$);
+    });
 
     swagger.configureSwaggerPaths('', '/api-docs', '');
     swagger.configure(betaConfig.baseUrl, 'beta');

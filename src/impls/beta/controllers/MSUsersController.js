@@ -84,36 +84,6 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         }
     });
 
-    // confirmUserAction
-    api.addPost({
-        spec: {
-            path: '/users/{userId}/confirmation/{confirmationCode}',
-            nickname: 'confirmUserAction',
-            description: 'Confirm a pending action on the specified user.',
-            notes: 'Called by an application to confirm the specified action on the specified user.',
-            summary: 'Confirm an action that modifies the User state.',
-            method: 'POST',
-            params: [
-                swagger.pathParam(
-                    'userId',
-                    'The unique identifier for the User to be marked for deletion.',
-                    'string'
-                ),
-                swagger.pathParam(
-                    'confirmationCode',
-                    'The code, passed privately to the human user, assocaited with the action to be confirmed.',
-                    'string'
-                )
-            ],
-            responseClass: 'User',
-            errorResponss: [ /* bad verification token, out of time, etc */ ]
-        },
-
-        action: function MSUsersControllerConfirmUserAction (req, res) {
-            res.json({});
-        }
-    });
-
     // updateUser
     api.addPatch({
         spec: {

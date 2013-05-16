@@ -12,12 +12,13 @@
 		"controllers": {
 			"MSProductsController": "./impls/beta/controllers/MSProductsController",
 			"MSTokensController": "./impls/beta/controllers/MSTokensController",
-			"MSUsersController": "./impls/beta/controllers/MSUsersController"
+			"MSUsersController": "./impls/beta/controllers/MSUsersController",
+			"MSConfirmationController": "./impls/beta/controllers/MSConfirmationController"
 		},
 
 		"resourceModels": {
 			"MSProduct": "../models/resources/beta/MSProduct",
-			"MSToken": "../models/resources/beta/MSTokens",
+			"MSToken": "../models/resources/beta/MSToken",
 			"MSUser": "../models/resources/beta/MSUser",
 			"MSUserSpec": "../models/resources/beta/MSUserSpec"
 		},
