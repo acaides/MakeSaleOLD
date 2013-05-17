@@ -1,23 +1,18 @@
-module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
+module.exports.bind = function MSUsersControllerBinder (app, impl) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         uuid = require('uuid'),
         jsonPatch = require('json-patch');
         passwordHash = require('password-hash'),
         JaySchema = require('jayschema'),
-        betaConfig = require('config').beta,
-        MSConfirmationType = betaConfig.definitions.MSConfirmationType,
-        MSUserState = betaConfig.definitions.MSUserState,
+        MSConfirmationType = impl.config.definitions.MSConfirmationType,
+        MSUserState = impl.config.definitions.MSUserState,
         js = new JaySchema(),
-        resourceModels = {
-            MSUser: require.main.require(betaConfig.resourceModels.MSUser),
-            MSUserSpec: require.main.require(betaConfig.resourceModels.MSUserSpec)
-        },
-        paging = require.main.require(betaConfig.utils.MSPagingHelper),
-        fields = require.main.require(betaConfig.utils.MSFieldsHelper);
+        paging = impl.utils.MSPagingHelper,
+        fields = impl.utils.MSFieldsHelper;
 
     // createUser
-    api.addPost({
+    impl.addPost({
         spec: {
             description: 'Create a new User.',
             path: '/users',
@@ -34,7 +29,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             var userSpec = req.body,
                 specErrs = js.validate(userSpec, resourceModels.MSUserSpec),
                 createNewUser = function (userSpec) {
-                    $$.User.create({
+                    app.$$.User.create({
                         name: userSpec.name,
                         email: userSpec.email,
                         password: passwordHash.generate(userSpec.password),
@@ -42,7 +37,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
                     }).success(function (user) {
                         var code = uuid.v4().replace(/-/g, '').toUpperCase();
 
-                        $$.Confirmation.create({
+                        app.$$.Confirmation.create({
                             code: code,
                             type: MSConfirmationType.USER_ACTIVATION,
                             action: JSON.stringify({
@@ -50,7 +45,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
                             })
                         }).success(function (confirmation) {
                             delete user.password;
-                            api.mailTransport.sendMail({
+                            app.mailTransport.sendMail({
                                 from: 'MakeSale <makesale@acaides.com>',
                                 to: user.email,
                                 subject: 'Confirm Your New MakeSale Account',
@@ -77,7 +72,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             } else {
                 // The passed UserSpec was syntactically correct, validate data.
                 // First, check for an existing User with the specified email.
-                $$.User.find({ where: { email: userSpec.email }})
+                app.$$.User.find({ where: { email: userSpec.email }})
                     .success(function (user) {
                         if(user) {
                             res.json({ error: 'An existing MakeSale user is already registered with that email.' });
@@ -100,7 +95,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     });
 
     // updateUser
-    api.addPatch({
+    impl.addPatch({
         spec: {
             path: '/users/{userId}',
             nickname: 'updateUser',
@@ -122,9 +117,9 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             var userId = req.params.userId,
                 userPatch = req.body;
 
-            $.query('UPDATE `User` SET `state`=\'' + MSUserState.UPDATING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+            app.$.query('UPDATE `User` SET `state`=\'' + MSUserState.UPDATING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
             .success(function() {
-                $$.Confirmation.create({
+                app.$$.Confirmation.create({
                     code: uuid.v4().replace(/-/g, '').toUpperCase(),
                     type: MSConfirmationType.USER_UPDATE,
                     action: JSON.stringify({
@@ -144,7 +139,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         }
     });
 
-    api.addDelete({
+    impl.addDelete({
         spec: {
             path: '/users/{userId}',
             nickname: 'deleteUser',
@@ -164,9 +159,9 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
         action: function MSUsersControllerDeleteUser (req, res) {
             var userId = req.params.userId;
 
-            $.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+            app.$.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETING + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
                 .success(function() {
-                    $$.Confirmation.create({
+                    app.$$.Confirmation.create({
                             code: uuid.v4().replace(/-/g, '').toUpperCase(),
                             type: MSConfirmationType.USER_DELETION,
                             action: JSON.stringify({
@@ -206,7 +201,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
     });
 
     //getUsers
-    api.addGet({
+    impl.addGet({
         spec: {
             description: 'Retrieve a list of Users in the User\'s scope.',
             path: '/users',
@@ -230,7 +225,7 @@ module.exports.bind = function MSUsersControllerBinder (api, $, $$) {
             paging.validateParams(req);
             fields.validateParam(req);
 
-            $$.User.findAll({
+            app.$$.User.findAll({
                 attributes: [ 'id', 'name', 'email', 'createdAt', 'updatedAt', 'state'],
                 where: 'state != \'' + MSUserState.DELETED + '\''
             })

@@ -1,80 +1,35 @@
 {
-	"api": {
-		"portNumber": 3000,
-		"impls": [ "beta" ],
-		"mailTransportSetup": [
-			"SMTP",
-			{
-	        	"service": "Gmail",
-		        "auth": {
-		            "user": "makesale@acaides.com",
-		            "pass": "3terna1Return"
-		        },
-		        "debug": true
-		    }
-		]	
-	},
+    "portNumber": 3000,
 
-	"beta": {
-		"baseUrl": "http://localhost:3000/beta",
+    "mailTransportSetup": [
+        "SMTP",
+        {
+            "service": "Gmail",
+            "auth": {
+                "user": "makesale@acaides.com",
+                "pass": "3terna1Return"
+            },
+            "debug": true
+        }
+    ],  
 
-		"module": "./impls/beta/MSBetaApi.js",
+    "database": {
+        "name": "makesale",
+        "host": "127.0.0.1",
+        "user": "msapi",
+        "password": "3terna1Return"
+    },
 
-		"controllers": {
-			"MSProductsController": "./impls/beta/controllers/MSProductsController",
-			"MSTokensController": "./impls/beta/controllers/MSTokensController",
-			"MSUsersController": "./impls/beta/controllers/MSUsersController",
-			"MSConfirmationController": "./impls/beta/controllers/MSConfirmationController"
-		},
+    "cache": {
+        "serverLocations": [ "127.0.0.1:11212" ],
+        "options": {}
+    },
 
-		"resourceModels": {
-			"MSProduct": "../models/resources/beta/MSProduct",
-			"MSToken": "../models/resources/beta/MSToken",
-			"MSUser": "../models/resources/beta/MSUser",
-			"MSUserSpec": "../models/resources/beta/MSUserSpec"
-		},
+    "search": {
+        "clientOptions": {}
+    },
 
-		"orms": {
-			"MSProductORM": "./impls/beta/orms/MSProductORM",
-			"MSTokenORM": "./impls/beta/orms/MSTokenORM",
-			"MSUserORM": "./impls/beta/orms/MSUserORM",
-			"MSConfirmationORM": "./impls/beta/orms/MSConfirmationORM"
-		},
+    "baseUrl": "http://localhost:3000",
 
-		"utils": {
-			"MSFieldsHelper": "./impls/beta/utils/MSFieldsHelper",
-			"MSPagingHelper": "./impls/beta/utils/MSPagingHelper"
-		},
-
-		"definitions": {
-			"MSConfirmationType" : {
-				"USER_ACTIVATION": 1,
-				"USER_DELETION": 2,
-				"USER_UPDATE": 3
-			},
-			"MSUserState": {
-				"ACTIVE": 1,
-				"ACTIVATING": 2,
-				"DELETED": 3,
-				"DELETING": 4,
-				"UPDATING": 5 
-			}
-		},
-		
-		"database": {
-			"name": "makesale",
-			"host": "127.0.0.1",
-			"user": "msapi",
-			"password": "3terna1Return"
-		},
-		
-		"search": {
-			"clientOptions": {}
-		},
-		
-		"cache": {
-			"serverLocations": [ "127.0.0.1:11212" ],
-			"options": {}
-		}
-	}
+    "impls": [ "v1" ]
 }

@@ -1,12 +1,11 @@
-module.exports.bind = function MSProductsControllerBinder (api, $, $$) {
-    var swagger = require('swagger-node-express'),
-        _ = require('lodash'),
-        betaConfig = require('config').beta,
-        paging = require.main.require(betaConfig.utils.MSPagingHelper),
-        fields = require.main.require(betaConfig.utils.MSFieldsHelper);
+module.exports.bind = function MSProductsControllerBinder (app, impl) {
+    var paging = impl.utils.MSPagingHelper,
+        fields = impl.utils.MSFieldsHelper,
+        swagger = require('swagger-node-express'),
+        _ = require('lodash');
 
-    // Setup "createProducts"
-    api.addPost({
+    // createProducts
+    impl.addPost({
         spec: {
             description: 'Create multiple new Products in the User\'s writable scope.',
             path: '/products',
@@ -38,7 +37,7 @@ module.exports.bind = function MSProductsControllerBinder (api, $, $$) {
     });
 
     // getProducts
-    api.addGet({
+    impl.addGet({
         spec: {
             description: 'Retrieve a list of Products in the User\'s scope.',
             path: '/products',
@@ -78,9 +77,9 @@ module.exports.bind = function MSProductsControllerBinder (api, $, $$) {
         }
     });
 
-    // // Setup "updateProducts"
-    // api.addPut({});
+    // updateProducts
+    // impl.addPut({});
 
-    // // Setup "deleteProducts"
-    // api.addDelete({});
+    // deleteProducts
+    // impl.addDelete({});
 };

@@ -1,13 +1,12 @@
-module.exports.bind = function MSConfirmationControllerBinder (api, $, $$) {
+module.exports.bind = function MSConfirmationControllerBinder (app, impl) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
         passwordHash = require('password-hash'),
-        betaConfig = require('config').beta,
-        MSConfirmationType = betaConfig.definitions.MSConfirmationType,
-        MSUserState = betaConfig.definitions.MSUserState;
+        MSConfirmationType = impl.config.definitions.MSConfirmationType,
+        MSUserState = impl.config.definitions.MSUserState;
 
     // confirm
-    api.addPost({
+    impl.addPost({
         spec: {
             path: '/confirm/{confirmationCode}',
             nickname: 'confirmUserAction',
@@ -29,14 +28,14 @@ module.exports.bind = function MSConfirmationControllerBinder (api, $, $$) {
         action: function MSConfirmationControllerConfirm (req, res) {
             var code = req.params.confirmationCode;
 
-            $$.Confirmation.find({ where: { code: code } })
+            app.$$.Confirmation.find({ where: { code: code } })
                 .success(function (confirmation) {
                     var action = JSON.parse(confirmation.action),
                         userId = action.userId;
 
                     switch(confirmation.type) {
                         case MSConfirmationType.USER_ACTIVATION:
-                            $.query('UPDATE `User` SET `state`=\'' + MSUserState.ACTIVE + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+                            app.$.query('UPDATE `User` SET `state`=\'' + MSUserState.ACTIVE + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
                                 .success(function () {
                                     confirmation.destroy();
                                     res.json({ msg: 'User successfully activated.' });
@@ -46,7 +45,7 @@ module.exports.bind = function MSConfirmationControllerBinder (api, $, $$) {
                                 });
                             break;
                         case MSConfirmationType.USER_DELETION:
-                            $.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETED + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
+                            app.$.query('UPDATE `User` SET `state`=\'' + MSUserState.DELETED + '\', `updatedAt`= NOW() WHERE `id`=\'' + userId + '\';')
                                 .success(function (user) {
                                     confirmation.destroy();
                                     res.json({ msg: 'User successfully deleted.' });

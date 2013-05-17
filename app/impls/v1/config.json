@@ -1,0 +1,16 @@
+{
+    "definitions": {
+        "MSConfirmationType" : {
+            "USER_ACTIVATION": 1,
+            "USER_DELETION": 2,
+            "USER_UPDATE": 3
+        },
+        "MSUserState": {
+            "ACTIVE": 1,
+            "ACTIVATING": 2,
+            "DELETED": 3,
+            "DELETING": 4,
+            "UPDATING": 5 
+        }
+    }
+}

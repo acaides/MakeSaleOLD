@@ -1,12 +1,11 @@
-module.exports.bind = function MSTokensControllerBinder (api, $, $$) {
+module.exports.bind = function MSTokensControllerBinder (app, impl) {
     var swagger = require('swagger-node-express'),
         _ = require('lodash'),
-        betaConfig = require('config').beta,
-        paging = require.main.require(betaConfig.utils.MSPagingHelper),
-        fields = require.main.require(betaConfig.utils.MSFieldsHelper);
+        paging = impl.utils.MSPagingHelper,
+        fields = impl.utils.MSFieldsHelper;
 
     // getTokens 
-    api.addGet({
+    impl.addGet({
         spec: {
             description: 'Get a list of Tokens in the User\'s scope.',
             path: '/tokens',
@@ -27,7 +26,7 @@ module.exports.bind = function MSTokensControllerBinder (api, $, $$) {
     });
 
     // getToken
-    api.addGet({
+    impl.addGet({
         spec: {
             desctiption: 'Get a specific Token in the User\'s scope.',
             path: '/tokens/{tokenId}',
@@ -44,7 +43,7 @@ module.exports.bind = function MSTokensControllerBinder (api, $, $$) {
     });
 
     // createToken
-    api.addPost({
+    impl.addPost({
         spec: {
             description: 'Create a new Token in the User\'s scope.',
             path: '/tokens',
@@ -70,7 +69,7 @@ module.exports.bind = function MSTokensControllerBinder (api, $, $$) {
     });
 
     // deleteToken
-    api.addDelete({
+    impl.addDelete({
         spec: {
             description: 'Delete a Token in the User\'s scope.',
             path: '/tokens/{tokenId}',
